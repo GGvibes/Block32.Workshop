@@ -27,9 +27,9 @@ app.get("/api/flavors", async (req, res, next) => {
 app.post("/api/flavors", async (req, res, next) => {
   try {
     console.log("POST request recieved", req.body);
-    const SQL = `INSERT INTO flavors (name, is_favorite, created_at=now()) VALUES ($1, $2, $3) RETURNING *`;
-    const response = await client.query(SQL, req.body.name);
-    res.send(response.rows);
+    const SQL = `INSERT INTO flavors (name, is_favorite) VALUES ($1, $2) RETURNING *`;
+    const response = await client.query(SQL, [req.body.name, req.body.is_favorite]);
+    res.send(response.rows[0]);
   } catch (error) {
     next(error);
   }
